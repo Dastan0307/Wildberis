@@ -3,6 +3,7 @@ import Box from '@mui/material/Box'
 import LinearProgress from '@mui/material/LinearProgress'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { addToCart } from '../../features/slices/cartSlice'
 import {
 	fetchProducts,
 	filterByCategory,
@@ -11,7 +12,6 @@ import {
 } from '../../features/slices/productsSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks'
 import { CartItem, Product } from '../../types/types'
-import { addToCart } from '../../features/slices/cartSlice'
 
 const ProductsPage = () => {
 	const {
@@ -27,15 +27,12 @@ const ProductsPage = () => {
 
 	const handleCategoryChange = (
 		event: React.ChangeEvent<{ value: unknown }>
-	) => {
+	): void => {
 		const category = event.target.value as string
 		dispatch(filterByCategory(category === 'Все категории' ? null : category))
 	}
 
-	const handlePageChange = (
-		event: React.ChangeEvent<unknown>,
-		page: number
-	) => {
+	const handlePageChange = (page: number): void => {
 		dispatch(setCurrentPage(page))
 	}
 
@@ -80,7 +77,7 @@ const ProductsPage = () => {
 				))}
 			</Select>
 			<div className='flex flex-wrap gap-20 justify-around mt-10'>
-				{currentPageProducts.map((product: Product)  => (
+				{currentPageProducts.map((product: Product) => (
 					<div key={product.id} className='w-[215px] h-full cursor-pointer'>
 						<Link to={`/product-details/${product.id}`}>
 							<img
@@ -92,15 +89,23 @@ const ProductsPage = () => {
 						<p className='text-orange-600 font-bold text-xl mt-3'>
 							{product.price} сом
 						</p>
-						<p className='text-xl font-sans mt-2'>{product.title}</p>	
-						<button className='w-full h-10 bg-violet-600 rounded-2xl text-white text-md font-mono mt-5 hover:bg-violet-700' onClick={() => handleAddToCart(product)}>
+						<p className='text-xl font-sans mt-2'>{product.title}</p>
+						<button
+							className='w-full h-10 bg-violet-600 rounded-2xl text-white text-md font-mono mt-5 hover:bg-violet-700'
+							onClick={() => handleAddToCart(product)}
+						>
 							В корзину
 						</button>
 					</div>
 				))}
 			</div>
 			{totalPages > 1 && (
-				<Stack spacing={2} direction='row' justifyContent='center' marginTop='50px'>
+				<Stack
+					spacing={2}
+					direction='row'
+					justifyContent='center'
+					marginTop='50px'
+				>
 					<Pagination
 						count={totalPages}
 						color='secondary'

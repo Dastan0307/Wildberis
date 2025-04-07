@@ -30,7 +30,8 @@ export const fetchProducts = createAsyncThunk(
 )
 
 export const searchProducts = createAsyncThunk(
-	'products/searchProducts', async (query: string) => {
+	'products/searchProducts',
+	async (query: string) => {
 		try {
 			const response = await axios.get(`${API}/products/?title=${query}`)
 			return response.data
@@ -39,7 +40,6 @@ export const searchProducts = createAsyncThunk(
 		}
 	}
 )
-
 
 export const getProductById = createAsyncThunk(
 	'products/getProductById',
@@ -84,8 +84,8 @@ const productsSlice = createSlice({
 		filterByCategory: (state, action: PayloadAction<string | null>) => {
 			state.selectedCategory = action.payload
 			if (action.payload) {
-				state.filteredProducts = state.products.filter(product =>
-					product.category.name === action.payload
+				state.filteredProducts = state.products.filter(
+					product => product.category.name === action.payload
 				)
 			} else {
 				state.filteredProducts = state.products
@@ -94,7 +94,7 @@ const productsSlice = createSlice({
 		},
 		setCurrentPage: (state, action: PayloadAction<number>) => {
 			state.currentPage = action.payload
-		}
+		},
 	},
 	extraReducers: build => {
 		build

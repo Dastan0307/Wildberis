@@ -52,5 +52,5 @@ export interface CartItem {
 		slug: string;
 	}
 	images: string[];
-	quantity?: number;
+	quantity: number;
 }

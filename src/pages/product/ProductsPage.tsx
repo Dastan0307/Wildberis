@@ -39,7 +39,7 @@ const ProductsPage = () => {
 	}
 
 	const handlePageChange = (
-		_event: React.ChangeEvent<unknown>,   // MUI Pagination обработчик 2 аргумент кутот биз ага бироосун гана бергенбиз: event и page.
+		_event: React.ChangeEvent<unknown>,   // MUI Pagination обработчик 2 аргумент кутот биз ага бироосун гана бергенбиз: (event и page).
 		page: number
 	): void => {
 		dispatch(setCurrentPage(page))
@@ -75,7 +75,7 @@ const ProductsPage = () => {
 				labelId='demo-simple-select-label'
 				id='demo-simple-select'
 				label='Age'
-				value={{ value: selectedCategory || '' }} // бул жерде, selectedCategory null болушу мүмкүн жана компонент string күтөт
+				value={{ value: selectedCategory || 'Все категории'}} // бул жерде, selectedCategory null болушу мүмкүн жана компонент string күтөт
 				onChange={handleCategoryChange}
 			>
 				<MenuItem value={'Все категории'}>Все категории</MenuItem>

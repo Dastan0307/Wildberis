@@ -32,21 +32,21 @@ const ProductsPage = () => {
 	const dispatch = useAppDispatch()
 
 	const handleCategoryChange = (
-		event: SelectChangeEvent<{ value: string }>
+		event: SelectChangeEvent<{ value: string }> // MUI - ChangeEvent эмес, SelectChangeEvent<string> болуу керек.
 	): void => {
 		const category = event.target.value as string
 		dispatch(filterByCategory(category === 'Все категории' ? null : category))
 	}
 
 	const handlePageChange = (
-		_event: React.ChangeEvent<unknown>,
+		_event: React.ChangeEvent<unknown>,   // MUI Pagination обработчик 2 аргумент кутот биз ага бироосун гана бергенбиз: event и page.
 		page: number
 	): void => {
 		dispatch(setCurrentPage(page))
 	}
 
 	const handleAddToCart = (product: CartItem) => {
-		dispatch(addToCart({ ...product, quantity: 1 }))
+		dispatch(addToCart({ ...product, quantity: 1 }))  // AddToCart(продукт: CartItem) функция number поля объектти кутот, бирок биз аны берген жокпуз.
 	}
 
 	useEffect(() => {
@@ -75,7 +75,7 @@ const ProductsPage = () => {
 				labelId='demo-simple-select-label'
 				id='demo-simple-select'
 				label='Age'
-				value={{ value: selectedCategory || '' }}
+				value={{ value: selectedCategory || '' }} // бул жерде, selectedCategory null болушу мүмкүн жана компонент string күтөт
 				onChange={handleCategoryChange}
 			>
 				<MenuItem value={'Все категории'}>Все категории</MenuItem>

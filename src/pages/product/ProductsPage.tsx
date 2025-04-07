@@ -1,7 +1,13 @@
-import { MenuItem, Pagination, Select, Stack } from '@mui/material'
+import {
+	MenuItem,
+	Pagination,
+	Select,
+	SelectChangeEvent,
+	Stack,
+} from '@mui/material'
 import Box from '@mui/material/Box'
 import LinearProgress from '@mui/material/LinearProgress'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { addToCart } from '../../features/slices/cartSlice'
 import {
@@ -26,18 +32,21 @@ const ProductsPage = () => {
 	const dispatch = useAppDispatch()
 
 	const handleCategoryChange = (
-		event: React.ChangeEvent<{ value: unknown }>
+		event: SelectChangeEvent<{ value: string }>
 	): void => {
 		const category = event.target.value as string
 		dispatch(filterByCategory(category === 'Все категории' ? null : category))
 	}
 
-	const handlePageChange = (page: number): void => {
+	const handlePageChange = (
+		_event: React.ChangeEvent<unknown>,
+		page: number
+	): void => {
 		dispatch(setCurrentPage(page))
 	}
 
 	const handleAddToCart = (product: CartItem) => {
-		dispatch(addToCart(product))
+		dispatch(addToCart({ ...product, quantity: 1 }))
 	}
 
 	useEffect(() => {
@@ -66,7 +75,7 @@ const ProductsPage = () => {
 				labelId='demo-simple-select-label'
 				id='demo-simple-select'
 				label='Age'
-				value={selectedCategory || 'Все категории'}
+				value={{ value: selectedCategory || '' }}
 				onChange={handleCategoryChange}
 			>
 				<MenuItem value={'Все категории'}>Все категории</MenuItem>
@@ -92,7 +101,7 @@ const ProductsPage = () => {
 						<p className='text-xl font-sans mt-2'>{product.title}</p>
 						<button
 							className='w-full h-10 bg-violet-600 rounded-2xl text-white text-md font-mono mt-5 hover:bg-violet-700'
-							onClick={() => handleAddToCart(product)}
+							onClick={() => handleAddToCart({...product, quantity: 1})}
 						>
 							В корзину
 						</button>

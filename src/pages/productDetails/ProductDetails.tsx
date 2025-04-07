@@ -1,9 +1,12 @@
 import { Box, LinearProgress } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { deleteProduct, getProductById } from '../../features/slices/productsSlice'
-import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks'
 import { addToCart } from '../../features/slices/cartSlice'
+import {
+	deleteProduct,
+	getProductById,
+} from '../../features/slices/productsSlice'
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks'
 import { CartItem } from '../../types/types'
 
 const ProductDetails = () => {
@@ -12,7 +15,7 @@ const ProductDetails = () => {
 	const { productById, error, loading } = useAppSelector(
 		state => state.products
 	)
-	
+
 	const [selectImg, setSelectImg] = useState<string | undefined>('')
 	const navigate = useNavigate()
 
@@ -26,7 +29,7 @@ const ProductDetails = () => {
 	}
 
 	const handleAddToCart = (product: CartItem) => {
-		dispatch(addToCart(product))
+		dispatch(addToCart({ ...product, quantity: 1 }))
 	}
 
 	useEffect(() => {
@@ -38,7 +41,6 @@ const ProductDetails = () => {
 	useEffect(() => {
 		dispatch(getProductById(Number(id)))
 	}, [dispatch, id])
-
 
 	if (error) return <div>Продукты не найдены</div>
 	if (loading)
@@ -83,13 +85,22 @@ const ProductDetails = () => {
 							<span className='text-black ml-5'>{productById.description}</span>
 						</p>
 
-						<button className='w-[200px] h-[40px] rounded-lg  bg-red-600 mt-10 mr-10' onClick={() => handleDeleteProduct(productById.id)}>
+						<button
+							className='w-[200px] h-[40px] rounded-lg  bg-red-600 mt-10 mr-10'
+							onClick={() => handleDeleteProduct(productById.id)}
+						>
 							Удалить
 						</button>
-						<Link to={`/update-product/${productById.id}`} className='py-2 px-14 rounded-lg bg-blue-600 mt-10 mr-10'>
+						<Link
+							to={`/update-product/${productById.id}`}
+							className='py-2 px-14 rounded-lg bg-blue-600 mt-10 mr-10'
+						>
 							Изменить
 						</Link>
-						<button className='w-[200px] h-[40px] rounded-lg bg-blue-600 mt-10' onClick={() => handleAddToCart(productById)}>
+						<button
+							className='w-[200px] h-[40px] rounded-lg bg-blue-600 mt-10'
+							onClick={() => handleAddToCart({ ...productById, quantity: 1 })}
+						>
 							Добавить в корзину
 						</button>
 					</div>

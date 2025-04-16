@@ -17,6 +17,7 @@ export interface Product {
 		slug: string;
 	}
 	images: string[];
+	like?: boolean;
 }
 
 export interface Category {

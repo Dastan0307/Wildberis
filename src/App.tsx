@@ -9,6 +9,7 @@ import ProductDetails from './pages/productDetails/ProductDetails'
 import NotFoundPage from './pages/notFound/NotFoundPage'
 import CreateProduct from './pages/createProduct/CreateProduct'
 import UpdateProduct from './pages/updateProduct/UpdateProduct'
+import FavoriteProducts from './pages/favoriteProducts/FavoriteProducts'
 
 function App() {
 	return (
@@ -20,6 +21,7 @@ function App() {
 				<Route path='/products' element={<ProductsPage />} />
 				<Route path='/cart' element={<CartPage />} />
 				<Route path='/create-product' element={<CreateProduct />} />
+				<Route path='/favorite-products' element={<FavoriteProducts />} />
 				<Route path='/update-product/:id' element={<UpdateProduct />} />
 				<Route path='/product-details/:id' element={<ProductDetails />} />
 				<Route path='*' element={<NotFoundPage />} />

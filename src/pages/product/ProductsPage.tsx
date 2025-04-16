@@ -7,7 +7,7 @@ import {
 } from '@mui/material'
 import Box from '@mui/material/Box'
 import LinearProgress from '@mui/material/LinearProgress'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { addToCart } from '../../features/slices/cartSlice'
 import {
@@ -15,6 +15,7 @@ import {
 	filterByCategory,
 	getCategories,
 	setCurrentPage,
+	toggleLike,
 } from '../../features/slices/productsSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks'
 import { CartItem, Product } from '../../types/types'
@@ -30,6 +31,10 @@ const ProductsPage = () => {
 		error,
 	} = useAppSelector(state => state.products)
 	const dispatch = useAppDispatch()
+	const [search, setSearch] = useState('')
+
+	const searchFilterProducts = filteredProducts.filter(product => product.title.toLowerCase().includes(search.toLowerCase()))
+	
 
 	const handleCategoryChange = (
 		event: SelectChangeEvent<{ value: string }> // MUI - ChangeEvent эмес, SelectChangeEvent<string> болуу керек.
@@ -53,6 +58,7 @@ const ProductsPage = () => {
 		dispatch(fetchProducts())
 		dispatch(getCategories())
 	}, [dispatch])
+	
 
 	if (error) return <div>Продукты не найдены</div>
 	if (loading)
@@ -63,14 +69,15 @@ const ProductsPage = () => {
 		)
 	const indexOfLastProduct = currentPage * itemsPerPage
 	const indexOfFirstProduct = indexOfLastProduct - itemsPerPage
-	const currentPageProducts = filteredProducts.slice(
+	const currentPageProducts = searchFilterProducts.slice(
 		indexOfFirstProduct,
 		indexOfLastProduct
 	)
-	const totalPages = Math.ceil(filteredProducts.length / itemsPerPage)
+	const totalPages = Math.ceil(searchFilterProducts.length / itemsPerPage)
 
 	return (
 		<>
+		<input type="text" placeholder='Search...' className='w-full h-10 border border-black pl-5' onChange={(e) => setSearch(e.target.value)} />
 			<Select
 				labelId='demo-simple-select-label'
 				id='demo-simple-select'
@@ -95,9 +102,14 @@ const ProductsPage = () => {
 								className='w-full h-[250px] rounded-lg'
 							/>
 						</Link>
-						<p className='text-orange-600 font-bold text-xl mt-3'>
-							{product.price} сом
-						</p>
+						<div className='flex justify-between items-center'>
+							<p className='text-orange-600 font-bold text-xl mt-3'>
+								{product.price} сом
+							</p>
+							<button onClick={() => dispatch(toggleLike(product.id))}>
+								{product.like ? '❤️' : '🤍'}
+							</button>
+						</div>
 						<p className='text-xl font-sans mt-2'>{product.title}</p>
 						<button
 							className='w-full h-10 bg-violet-600 rounded-2xl text-white text-md font-mono mt-5 hover:bg-violet-700'
